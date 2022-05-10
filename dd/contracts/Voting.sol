@@ -22,7 +22,14 @@ contract Voting {
     constructor() public {
         totalVotingCount = 0;
     }
+    function candidateEnroll(string memory _name) public {
+        Candidate memory candi;
+        candi.name = _name;
+        candi.votedCount = 0;
+        candidates[msg.sender] = candi;
+        candidateAddrs.push(msg.sender);
 
+    }
     function vote(string memory _name, string memory _to) public {
         totalVotingCount++;
 
@@ -36,16 +43,36 @@ contract Voting {
         voter.name = _name;
         voter.votingCount = 1;
         voters[msg.sender] = voter;
-        
         votersAddrs.push(msg.sender);
+
         uint256 len =  candidateAddrs.length;
         if( len > 0){
             for(uint256 i=0; i<len; i++){
-                if(candidateAddrs[i].name == _to){
-                    
-            }}
+                address  addr = candidateAddrs[i];
+                string memory candidateName = candidates[addr].name;
+                if(stringCompare(candidateName, _to)){//내가 투표하려는 후보 찾음.
+                    candidates[addr].votedCount++;
+                }
+            }
         }
 
 
+    }
+    function viewCandidatesVotingCount(string memory _to) public view returns(uint256) {
+        uint256 len =  candidateAddrs.length;
+        if( len > 0){
+            for(uint256 i=0; i<len; i++){
+                address  addr = candidateAddrs[i];
+                string memory candidateName = candidates[addr].name;
+                if(stringCompare(candidateName, _to)){
+                    return (candidates[addr].votedCount);
+                }
+            }
+        }
+        return 0;
+
+    }
+    function stringCompare(string memory a, string memory b) public pure returns(bool) {
+        return (keccak256(bytes(a)) == keccak256(bytes(b)));
     }
 }

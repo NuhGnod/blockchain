@@ -5,6 +5,7 @@ pragma solidity >=0.4.21;
 contract VisitCounter {
 
     uint256 private totalVisit;
+    
     struct Visitor {
         string name;
         uint256 visitCount;
