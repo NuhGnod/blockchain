@@ -47,7 +47,7 @@
        console.log("No web3? You should consider trying MetaMask!");
        // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
        web3 = new Web3(
-         new Web3.providers.HttpProvider("https://localhost:8545")
+         new Web3.providers.HttpProvider("https://localhost:8080")
        );
      }
  });
@@ -67,7 +67,7 @@
      web3.eth.accounts.forEach(accountForEach);
      //console.log(web3);
     
-   web3.eth.getCoinbase(function(err, account) {
+     web3.eth.getCoinbase(function(err, account) {
      console.log(account)
        var coinbase = account;
        document.getElementById('coinbase').innerText = 'coinbase: ' + coinbase;
@@ -78,58 +78,157 @@
  
       $("#balance").text(web3.eth.getBalance(web3.eth.coinbase).toNumber());
      var VisitCounterContract = web3.eth.contract([
-       {
-         "inputs": [],
-         "payable": false,
-         "stateMutability": "nonpayable",
-         "type": "constructor"
-       },
-       {
-         "constant": false,
-         "inputs": [
-           {
-             "name": "_name",
-             "type": "string"
-           }
-         ],
-         "name": "visit",
-         "outputs": [],
-         "payable": false,
-         "stateMutability": "nonpayable",
-         "type": "function"
-       },
-       {
-         "constant": true,
-         "inputs": [],
-         "name": "viewAllVisitorAddresses",
-         "outputs": [
-           {
-             "name": "",
-             "type": "address[]"
-           }
-         ],
-         "payable": false,
-         "stateMutability": "view",
-         "type": "function"
-       },
-       {
-         "constant": true,
-         "inputs": [],
-         "name": "viewTotalVisit",
-         "outputs": [
-           {
-             "name": "",
-             "type": "uint256"
-           }
-         ],
-         "payable": false,
-         "stateMutability": "view",
-         "type": "function"
-       }
-     ]);
-     //VisitCounter = VisitCounterContract.at('0x924BE7cb656c8D348AC392D35Cc3052cDA45Ff90');
-     VisitCounter = VisitCounterContract.at('0x83C239AC82552B085ca439bAbaA5A4bb4A5A0bF1');
-       console.log(VisitCounter);
+     {
+       "inputs": [
+         {
+           "internalType": "string",
+           "name": "_name",
+           "type": "string"
+         }
+       ],
+       "name": "candidateEnroll",
+       "outputs": [],
+       "stateMutability": "nonpayable",
+       "type": "function"
+     },
+     {
+       "inputs": [],
+       "stateMutability": "nonpayable",
+       "type": "constructor"
+     },
+     {
+       "inputs": [
+         {
+           "internalType": "string",
+           "name": "_name",
+           "type": "string"
+         },
+         {
+           "internalType": "string",
+           "name": "_to",
+           "type": "string"
+         }
+       ],
+       "name": "vote",
+       "outputs": [],
+       "stateMutability": "nonpayable",
+       "type": "function"
+     },
+     {
+       "inputs": [
+         {
+           "internalType": "uint256",
+           "name": "",
+           "type": "uint256"
+         }
+       ],
+       "name": "candidateAddrs",
+       "outputs": [
+         {
+           "internalType": "address",
+           "name": "",
+           "type": "address"
+         }
+       ],
+       "stateMutability": "view",
+       "type": "function"
+     },
+     {
+       "inputs": [
+         {
+           "internalType": "address",
+           "name": "",
+           "type": "address"
+         }
+       ],
+       "name": "candidates",
+       "outputs": [
+         {
+           "internalType": "string",
+           "name": "name",
+           "type": "string"
+         },
+         {
+           "internalType": "uint256",
+           "name": "votedCount",
+           "type": "uint256"
+         }
+       ],
+       "stateMutability": "view",
+       "type": "function"
+     },
+     {
+       "inputs": [
+         {
+           "internalType": "string",
+           "name": "a",
+           "type": "string"
+         },
+         {
+           "internalType": "string",
+           "name": "b",
+           "type": "string"
+         }
+       ],
+       "name": "stringCompare",
+       "outputs": [
+         {
+           "internalType": "bool",
+           "name": "",
+           "type": "bool"
+         }
+       ],
+       "stateMutability": "pure",
+       "type": "function"
+     },
+     {
+       "inputs": [
+         {
+           "internalType": "string",
+           "name": "_to",
+           "type": "string"
+         }
+       ],
+       "name": "viewCandidatesVotingCount",
+       "outputs": [
+         {
+           "internalType": "uint256",
+           "name": "",
+           "type": "uint256"
+         }
+       ],
+       "stateMutability": "view",
+       "type": "function"
+     },
+     {
+       "inputs": [
+         {
+           "internalType": "address",
+           "name": "",
+           "type": "address"
+         }
+       ],
+       "name": "voters",
+       "outputs": [
+         {
+           "internalType": "string",
+           "name": "name",
+           "type": "string"
+         },
+         {
+           "internalType": "uint256",
+           "name": "votingCount",
+           "type": "uint256"
+         }
+       ],
+       "stateMutability": "view",
+       "type": "function"
+     }
+   ]);
+     VisitCounter = VisitCounterContract.at('0x09D8E09f153219805f49F29dD1C698B77C9a7a0C');
+      //voting sol addr
+     
+     console.log(VisitCounter);
        //console.log(setTotalVisitCount);
      setTotalVisitCount();
      setTotalVisitedAccountList();
