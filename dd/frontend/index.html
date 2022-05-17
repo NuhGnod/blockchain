@@ -2,12 +2,15 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <script type="text/javascript" src="./web3.min.js"></script>
+    <script type="text/javascript" src="./web3.min.js.map"></script>
     <script type="text/javascript" src="./bower_components/jquery/dist/jquery.min.js"></script>
     <!-- <script  src="http://code.jquery.com/jquery-latest.min.js"></script> -->
     <!-- <script type="text/javascript" src="./inpage.js"></script> -->
     <script type="text/javascript">
-        var Web3 = require('web3');
+        //var Web3 = require('web3');
+        //var contract = require('web3-eth-contract');
         console.log(window.ethereum)
        /* window.addEventListener('load', function () {
             if (typeof web3 !== 'undefined') {
@@ -26,18 +29,19 @@
         })
         */
         var account;
+        var VotingContract;
         window.addEventListener('load',async function() {
             console.log("ASD");
-            if (window.ethereum) {
+            if (!window.ethereum) {
                 console.log(`ethereum`)
                 web3 = new Web3(window.ethereum);
                 console.log(web3)
             }
             // Legacy dapp browsers...
-            else if (window.web3) {
+            else if (typeof web3 !== "undefined") {
                 console.log('Web3 Detected! ' + web3.currentProvider.constructor.name)
                 window.web3 = new Web3(web3.currentProvider);
-                console.log(Web3.givenProvider);
+                console.log(web3);
             }
             // Non-dapp browsers...
             else {
@@ -51,32 +55,8 @@
             {
                 //account = await web3.eth.requestAccounts();
             }
-          });
-
-          async function gg() {
-              console.log(`gg start`);
-              try {
-                 account = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                console.log(account);
-              } catch (error) {
-                if (error.code === 4001) {
-                  // User rejected request
-                }
-                console.log(error)
-              }
-
-            console.log("gg end")
-          }
-          console.log(window.ethereum)
-        let Voting = "";
-
-        $(document).ready(function() {
-            gg()
-            console.log(window)
-     //       console.log(web3.version)
-            console.log("ready")
-            //web3.setProvider(new web3.providers.HttpProvider("https://ropsten.infura.io/v3/9a9dcb1ea0784cafb2dc608fdca92642"))
-            let VotingContract = web3.eth.contract([
+            console.log(web3.version.api)
+             VotingContract =  web3.eth.contract([
         {
             "inputs": [],
             "stateMutability": "nonpayable",
@@ -223,15 +203,42 @@
             "stateMutability": "view",
             "type": "function"
         }
-    ])
+    ], '0xc691Dd6b3C5781350197cd16d84330bC97beC24a');
             Voting = VotingContract.at('0xc691Dd6b3C5781350197cd16d84330bC97beC24a')
             web3.eth.defaultAccount = '0x5587acE223024b4B9806466eeD79F17518435350'
             console.log(Voting)
             console.log(web3.eth.defaultAccount)
             console.log(web3)
 
-            let curAccount =  web3.eth.getAccounts()
-            console.log(curAccount)
+          });
+
+          async function gg() {
+              console.log(`gg start`);
+              try {
+                 account = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                console.log(account);
+              } catch (error) {
+                if (error.code === 4001) {
+                  // User rejected request
+                }
+                console.log(error)
+              }
+
+            console.log("gg end")
+          }
+          console.log(window.ethereum)
+        let Voting = "";
+
+        $(document).ready(function() {
+            gg()
+            console.log(window)
+     //       console.log(web3.version)
+            console.log("ready")
+            //web3.setProvider(new web3.providers.HttpProvider("https://ropsten.infura.io/v3/9a9dcb1ea0784cafb2dc608fdca92642"))
+            console.log(web3)
+            
+            //let curAccount =  web3.eth.getAccounts()
+            //console.log(curAccount)
         })
 
 
