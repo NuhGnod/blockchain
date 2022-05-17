@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="./voting.css">
+
     <script type="text/javascript" src="./web3.min.js"></script>
     <script type="text/javascript" src="./web3.min.js.map"></script>
     <script type="text/javascript" src="./bower_components/jquery/dist/jquery.min.js"></script>
     <!-- <script  src="http://code.jquery.com/jquery-latest.min.js"></script> -->
     <!-- <script type="text/javascript" src="./inpage.js"></script> -->
+
     <script type="text/javascript">
+    
         //var Web3 = require('web3');
         //var contract = require('web3-eth-contract');
         console.log(window.ethereum)
@@ -57,155 +61,156 @@
             }
             console.log(web3.version.api)
              VotingContract =  web3.eth.contract([
-        {
-            "inputs": [],
-            "stateMutability": "nonpayable",
-            "type": "constructor"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "name": "candidateAddrs",
-            "outputs": [
-                {
-                    "internalType": "address",
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "_name",
-                    "type": "string"
-                }
-            ],
-            "name": "candidateEnroll",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "name": "candidates",
-            "outputs": [
-                {
-                    "internalType": "string",
-                    "name": "name",
-                    "type": "string"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "votedCount",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "a",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "b",
-                    "type": "string"
-                }
-            ],
-            "name": "stringCompare",
-            "outputs": [
-                {
-                    "internalType": "bool",
-                    "name": "",
-                    "type": "bool"
-                }
-            ],
-            "stateMutability": "pure",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "_to",
-                    "type": "string"
-                }
-            ],
-            "name": "viewCandidatesVotingCount",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "_name",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_to",
-                    "type": "string"
-                }
-            ],
-            "name": "vote",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "name": "voters",
-            "outputs": [
-                {
-                    "internalType": "string",
-                    "name": "name",
-                    "type": "string"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "votingCount",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        }
-    ], '0xc691Dd6b3C5781350197cd16d84330bC97beC24a');
-            Voting = VotingContract.at('0xc691Dd6b3C5781350197cd16d84330bC97beC24a')
+             {
+                 "inputs": [],
+                 "stateMutability": "nonpayable",
+                 "type": "constructor"
+             },
+             {
+                 "inputs": [
+                     {
+                         "internalType": "uint256",
+                         "name": "",
+                         "type": "uint256"
+                     }
+                 ],
+                 "name": "candidateAddrs",
+                 "outputs": [
+                     {
+                         "internalType": "address",
+                         "name": "",
+                         "type": "address"
+                     }
+                 ],
+                 "stateMutability": "view",
+                 "type": "function"
+             },
+             {
+                 "inputs": [
+                     {
+                         "internalType": "string",
+                         "name": "_name",
+                         "type": "string"
+                     }
+                 ],
+                 "name": "candidateEnroll",
+                 "outputs": [],
+                 "stateMutability": "nonpayable",
+                 "type": "function"
+             },
+             {
+                 "inputs": [
+                     {
+                         "internalType": "address",
+                         "name": "",
+                         "type": "address"
+                     }
+                 ],
+                 "name": "candidates",
+                 "outputs": [
+                     {
+                         "internalType": "string",
+                         "name": "name",
+                         "type": "string"
+                     },
+                     {
+                         "internalType": "uint256",
+                         "name": "votedCount",
+                         "type": "uint256"
+                     }
+                 ],
+                 "stateMutability": "view",
+                 "type": "function"
+             },
+             {
+                 "inputs": [
+                     {
+                         "internalType": "string",
+                         "name": "a",
+                         "type": "string"
+                     },
+                     {
+                         "internalType": "string",
+                         "name": "b",
+                         "type": "string"
+                     }
+                 ],
+                 "name": "stringCompare",
+                 "outputs": [
+                     {
+                         "internalType": "bool",
+                         "name": "",
+                         "type": "bool"
+                     }
+                 ],
+                 "stateMutability": "pure",
+                 "type": "function"
+             },
+             {
+                 "inputs": [
+                     {
+                         "internalType": "string",
+                         "name": "_to",
+                         "type": "string"
+                     }
+                 ],
+                 "name": "viewCandidatesVotingCount",
+                 "outputs": [
+                     {
+                         "internalType": "uint256",
+                         "name": "",
+                         "type": "uint256"
+                     }
+                 ],
+                 "stateMutability": "view",
+                 "type": "function"
+             },
+             {
+                 "inputs": [
+                     {
+                         "internalType": "string",
+                         "name": "_name",
+                         "type": "string"
+                     },
+                     {
+                         "internalType": "string",
+                         "name": "_to",
+                         "type": "string"
+                     }
+                 ],
+                 "name": "vote",
+                 "outputs": [],
+                 "stateMutability": "nonpayable",
+                 "type": "function"
+             },
+             {
+                 "inputs": [
+                     {
+                         "internalType": "address",
+                         "name": "",
+                         "type": "address"
+                     }
+                 ],
+                 "name": "voters",
+                 "outputs": [
+                     {
+                         "internalType": "string",
+                         "name": "name",
+                         "type": "string"
+                     },
+                     {
+                         "internalType": "uint256",
+                         "name": "votingCount",
+                         "type": "uint256"
+                     }
+                 ],
+                 "stateMutability": "view",
+                 "type": "function"
+             }
+         ], '0x0dC48c16DA61f64d96bF25b0381c359909A4C56a');
+            Voting = VotingContract.at('0x0dC48c16DA61f64d96bF25b0381c359909A4C56a')
             web3.eth.defaultAccount = '0x5587acE223024b4B9806466eeD79F17518435350'
+            console.log(VotingContract)
             console.log(Voting)
             console.log(web3.eth.defaultAccount)
             console.log(web3)
@@ -241,6 +246,19 @@
             //console.log(curAccount)
         })
 
+        function vote(){
+            //let name = $(`#voteToCandidate`);
+            let name = document.querySelector("#voteToCandidate").value;
+            console.log(name);
+            Voting.vote("동훈",name, (err,res) => {
+                console.log(res);
+            })
+
+
+        }
+        function viewCandidateVotingCount(){
+
+        }
 
         function getBalance() {
             var address, wei, balance
@@ -268,6 +286,23 @@
     <button type="button" onClick="getBalance();">Get Balance</button>
     <br />
     <br />
-    <div id="output"></div>
+    <div id="output">여기에</div>
+    <hr>
+    <br />
+    <label for="voteToCandidate">투표하기</label>
+    <input id="voteToCandidate">
+    <input id="vote" type="button" onClick="vote();" value="투표하기">
+    <P>후보자 목록  </P>
+    <div>
+        후보자1 x 투표 수 : <div class="voting_div" id="candidate1">여기에</div>
+        <br>
+        <br>
+        후보자2 : <div class="voting_div" id="candidate2">22</div>
+        <br>
+        <br>
+        후보자3 : <div class="voting_div" id="candidate3">33</div>
+        <br>
+        <br>
+    </div>
 </body>
 </html>

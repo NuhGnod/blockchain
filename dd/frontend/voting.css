@@ -1,0 +1,7 @@
+.voting_div{
+    border: 2px solid red;
+    /* display: inline; */
+}
+#candidate1 {
+    border: 2px solid red;
+}
