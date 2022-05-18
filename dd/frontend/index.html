@@ -62,9 +62,40 @@
             console.log(web3.version.api)
              VotingContract =  web3.eth.contract([
              {
+                 "inputs": [
+                     {
+                         "internalType": "string",
+                         "name": "_name",
+                         "type": "string"
+                     }
+                 ],
+                 "name": "candidateEnroll",
+                 "outputs": [],
+                 "stateMutability": "nonpayable",
+                 "type": "function"
+             },
+             {
                  "inputs": [],
                  "stateMutability": "nonpayable",
                  "type": "constructor"
+             },
+             {
+                 "inputs": [
+                     {
+                         "internalType": "string",
+                         "name": "_name",
+                         "type": "string"
+                     },
+                     {
+                         "internalType": "string",
+                         "name": "_to",
+                         "type": "string"
+                     }
+                 ],
+                 "name": "vote",
+                 "outputs": [],
+                 "stateMutability": "nonpayable",
+                 "type": "function"
              },
              {
                  "inputs": [
@@ -83,19 +114,6 @@
                      }
                  ],
                  "stateMutability": "view",
-                 "type": "function"
-             },
-             {
-                 "inputs": [
-                     {
-                         "internalType": "string",
-                         "name": "_name",
-                         "type": "string"
-                     }
-                 ],
-                 "name": "candidateEnroll",
-                 "outputs": [],
-                 "stateMutability": "nonpayable",
                  "type": "function"
              },
              {
@@ -168,24 +186,6 @@
              {
                  "inputs": [
                      {
-                         "internalType": "string",
-                         "name": "_name",
-                         "type": "string"
-                     },
-                     {
-                         "internalType": "string",
-                         "name": "_to",
-                         "type": "string"
-                     }
-                 ],
-                 "name": "vote",
-                 "outputs": [],
-                 "stateMutability": "nonpayable",
-                 "type": "function"
-             },
-             {
-                 "inputs": [
-                     {
                          "internalType": "address",
                          "name": "",
                          "type": "address"
@@ -207,8 +207,8 @@
                  "stateMutability": "view",
                  "type": "function"
              }
-         ], '0x0dC48c16DA61f64d96bF25b0381c359909A4C56a');
-            Voting = VotingContract.at('0x0dC48c16DA61f64d96bF25b0381c359909A4C56a')
+         ], '0xFbEd2F011b789c5BE1d51b8A93017eB70D6c9CC8');
+            Voting = VotingContract.at('0xFbEd2F011b789c5BE1d51b8A93017eB70D6c9CC8')
             web3.eth.defaultAccount = '0x5587acE223024b4B9806466eeD79F17518435350'
             console.log(VotingContract)
             console.log(Voting)
@@ -253,10 +253,21 @@
             Voting.vote("동훈",name, (err,res) => {
                 console.log(res);
             })
-
-
+            alert(`${name}에게 투표하였다.`);
+            viewCandidateVotingCount(name)
         }
-        function viewCandidateVotingCount(){
+            function viewCandidateVotingCount(_to){
+            console.log(_to)
+            let count;
+            
+            Voting.viewCandidatesVotingCount(_to, (err,res) => {
+                console.log(res)
+                count = res;
+                document.querySelector("#candidate1").innerHTML  =count;
+            })
+            
+           console.log(document.querySelector("#candidate1").innerHTML);
+           console.log(count)
 
         }
 
