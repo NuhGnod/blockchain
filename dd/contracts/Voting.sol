@@ -1,5 +1,4 @@
 //SPDX-License-Identifier: MIT
-
 pragma solidity >=0.4.21;
 contract Voting {
     uint256 private totalVotingCount;
@@ -22,11 +21,21 @@ contract Voting {
     constructor() public {
         totalVotingCount = 0;
     }
+    function viewAllCandidateList() public view returns( Candidate[2] memory c){
+        uint256 len = candidateAddrs.length;
+        Candidate [2] memory can; 
+
+        for(uint256 i=0; i<len; i++){
+            address addr = candidateAddrs[i];
+            can[i] = (candidates[addr]);
+        }
+        return can;
+    }
     function candidateEnroll(string memory _name) public {
         Candidate memory candi;
         candi.name = _name;
         candi.votedCount = 0;
-        candidates[msg.sender] = candi;
+        candidates[msg.sender] = candi; 
         candidateAddrs.push(msg.sender);
 
     }

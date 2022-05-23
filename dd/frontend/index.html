@@ -36,7 +36,7 @@
         var VotingContract;
         window.addEventListener('load',async function() {
             console.log("ASD");
-            if (!window.ethereum) {
+            if (window.ethereum) {
                 console.log(`ethereum`)
                 web3 = new Web3(window.ethereum);
                 console.log(web3)
@@ -60,6 +60,180 @@
                 //account = await web3.eth.requestAccounts();
             }
             console.log(web3.version.api)
+            VotingContract = web3.eth.contract([
+            {
+                "inputs": [],
+                "stateMutability": "nonpayable",
+                "type": "constructor"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "candidateAddrs",
+                "outputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "_name",
+                        "type": "string"
+                    }
+                ],
+                "name": "candidateEnroll",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "name": "candidates",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "votedCount",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "a",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "b",
+                        "type": "string"
+                    }
+                ],
+                "name": "stringCompare",
+                "outputs": [
+                    {
+                        "internalType": "bool",
+                        "name": "",
+                        "type": "bool"
+                    }
+                ],
+                "stateMutability": "pure",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "viewAllCandidateList",
+                "outputs": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "string",
+                                "name": "name",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "votedCount",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct Voting.Candidate[2]",
+                        "name": "c",
+                        "type": "tuple[2]"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "_to",
+                        "type": "string"
+                    }
+                ],
+                "name": "viewCandidatesVotingCount",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "_name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "_to",
+                        "type": "string"
+                    }
+                ],
+                "name": "vote",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "name": "voters",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "votingCount",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ],'0x0a204de75cc93a85577b97d73b8c04b1b4c987aa')
+            /*
              VotingContract =  web3.eth.contract([
              {
                  "inputs": [
@@ -208,7 +382,8 @@
                  "type": "function"
              }
          ], '0xFbEd2F011b789c5BE1d51b8A93017eB70D6c9CC8');
-            Voting = VotingContract.at('0xFbEd2F011b789c5BE1d51b8A93017eB70D6c9CC8')
+           */
+         Voting = VotingContract.at('0x0a204de75cc93a85577b97d73b8c04b1b4c987aa')
             web3.eth.defaultAccount = '0x5587acE223024b4B9806466eeD79F17518435350'
             console.log(VotingContract)
             console.log(Voting)
@@ -232,7 +407,6 @@
             console.log("gg end")
           }
           console.log(window.ethereum)
-        let Voting = "";
 
         $(document).ready(function() {
             gg()
@@ -245,27 +419,45 @@
             //let curAccount =  web3.eth.getAccounts()
             //console.log(curAccount)
         })
+        function view(_name){
+            console.log("asddasd")
+            let cnt = Voting.viewCandidatesVotingCount(_name,(err,res) => {
+                document.querySelector("#candidate1").innerHTML  =res;
 
-        function vote(){
+            });
+
+        }
+        setInterval(function() {
+                view("후보자1")        
+            },1000);
+        async function vote(){
             //let name = $(`#voteToCandidate`);
             let name = document.querySelector("#voteToCandidate").value;
             console.log(name);
+            let R;
             Voting.vote("동훈",name, (err,res) => {
+                R= res;
                 console.log(res);
+                //const result = web3.eth.getTransaction(R, (err,res) => {
+               //     console.log(res)
+               // });
             })
             alert(`${name}에게 투표하였다.`);
-            viewCandidateVotingCount(name)
+            
+           await viewCandidateVotingCount(name)
         }
-            function viewCandidateVotingCount(_to){
+            async function viewCandidateVotingCount(_to){
             console.log(_to)
             let count;
-            
-            Voting.viewCandidatesVotingCount(_to, (err,res) => {
+
+           
+           const lgg =  await Voting.viewCandidatesVotingCount(_to,  (err,res) => {
                 console.log(res)
                 count = res;
                 document.querySelector("#candidate1").innerHTML  =count;
+                return count;
             })
-            
+            console.log(lgg)
            console.log(document.querySelector("#candidate1").innerHTML);
            console.log(count)
 
