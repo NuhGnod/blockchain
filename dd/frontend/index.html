@@ -62,9 +62,40 @@
             console.log(web3.version.api)
             VotingContract = web3.eth.contract([
             {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "_name",
+                        "type": "string"
+                    }
+                ],
+                "name": "candidateEnroll",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
                 "inputs": [],
                 "stateMutability": "nonpayable",
                 "type": "constructor"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "_name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "_to",
+                        "type": "string"
+                    }
+                ],
+                "name": "vote",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
             },
             {
                 "inputs": [
@@ -83,19 +114,6 @@
                     }
                 ],
                 "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "inputs": [
-                    {
-                        "internalType": "string",
-                        "name": "_name",
-                        "type": "string"
-                    }
-                ],
-                "name": "candidateEnroll",
-                "outputs": [],
-                "stateMutability": "nonpayable",
                 "type": "function"
             },
             {
@@ -193,24 +211,6 @@
             {
                 "inputs": [
                     {
-                        "internalType": "string",
-                        "name": "_name",
-                        "type": "string"
-                    },
-                    {
-                        "internalType": "string",
-                        "name": "_to",
-                        "type": "string"
-                    }
-                ],
-                "name": "vote",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
-            },
-            {
-                "inputs": [
-                    {
                         "internalType": "address",
                         "name": "",
                         "type": "address"
@@ -232,7 +232,7 @@
                 "stateMutability": "view",
                 "type": "function"
             }
-        ],'0x0a204de75cc93a85577b97d73b8c04b1b4c987aa')
+        ],'0x71749Db3C6Ab70dA427bFDf3A71535ea3D2f6937')
             /*
              VotingContract =  web3.eth.contract([
              {
@@ -420,16 +420,20 @@
             //console.log(curAccount)
         })
         function view(_name){
-            console.log("asddasd")
+            let name = _name.slice(3,4);
+            console.log(name)
             let cnt = Voting.viewCandidatesVotingCount(_name,(err,res) => {
-                document.querySelector("#candidate1").innerHTML  =res;
+                document.querySelector(`#candidate${name}`).innerHTML  =res;
 
             });
 
         }
         setInterval(function() {
                 view("후보자1")        
-            },1000);
+            },2000);
+        setInterval(function() {
+            view("후보자2")
+        },2000)
         async function vote(){
             //let name = $(`#voteToCandidate`);
             let name = document.querySelector("#voteToCandidate").value;
