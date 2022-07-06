@@ -8,12 +8,12 @@ contract NFT is ERC721 {
     uint256 tokenId = 1;
     uint time;
     struct img{
-        string tokenName;
-        uint256 tokenId;
-        address owner;
+        string _tokenName;
+        uint256 _tokenId;
+        address _owner;
     }
     img[] public allTokens;
-    
+    mapping(address => img[]) userTokens;
     mapping(uint256 => string) private _tokenURIs;
     constructor() public ERC721("DONGHUN", "HUN") {
         
@@ -25,7 +25,9 @@ contract NFT is ERC721 {
         uint256 Id;
         Id = tokenId;
         _mint(to, tokenId);
-        allTokens.push(img("zoom", Id, to));
+        img memory  _img = img("zoom", Id, to);
+        allTokens.push(_img);
+        userTokens[msg.sender].push(_img);
         _tokenURIs[tokenId] = tokenURI;
         tokenId++;
         return Id;
@@ -34,6 +36,10 @@ contract NFT is ERC721 {
     function viewAllTokens() public view returns(img[] memory){
         return allTokens;
     }
+    
+    function viewMyTokens(address _key) public view returns(img[] memory) {
+        return userTokens[_key];
 
+    }
     
 }
