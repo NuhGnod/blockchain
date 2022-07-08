@@ -17,6 +17,7 @@ console.log(window.ethereum);
         */
 var account;
 var VotingContract;
+var Voting;
 window.addEventListener("load", async function () {
   console.log("ASD");
   if (window.ethereum) {
@@ -45,7 +46,7 @@ window.addEventListener("load", async function () {
     //account = await web3.eth.requestAccounts();
   }
   console.log(web3.version.api);
-  VotingContract = web3.eth.contract(
+  VotingContract = new web3.eth.Contract(
     [
       {
         inputs: [],
@@ -502,15 +503,25 @@ window.addEventListener("load", async function () {
         type: "function",
       },
     ],
-    "0x9028E4373DF2B84844ACD0a1b3158B4cF0500689"
+    "0x72C113fDd8F7A4596c0151DA01DF0fB3E4D5CCAE"
   );
-
-  Voting = VotingContract.at("0x9028E4373DF2B84844ACD0a1b3158B4cF0500689");
-  web3.eth.defaultAccount = "0x5587acE223024b4B9806466eeD79F17518435350";
   console.log(VotingContract);
+
+  //   Voting = VotingContract.at("0x72C113fDd8F7A4596c0151DA01DF0fB3E4D5CCAE");
+  Voting = VotingContract;
+  //   web3.eth.defaultAccount = "0x5587acE223024b4B9806466eeD79F17518435350";
   console.log(Voting);
   console.log(web3.eth.defaultAccount);
   console.log(web3);
+  //   console.log(
+  //     Voting.mintNFT(
+  //       Voting.address,
+  //       "https://ipfs.io/ipfs/QmSyj5Hjqux8ecxNo5uEi5v7ZSJVX7aWVo8FbSRviZVWHb",
+  //       (err, res) => {
+  //         console.log(`minting@`);
+  //       }
+  //     )
+  //   );
 });
 gg();
 async function gg() {
@@ -546,6 +557,59 @@ function getBalance() {
     document.getElementById("output").innerHTML = err;
   }
 }
+tx = "";
+console.log("asd");
+mint_url = document.getElementById("mint_url");
+mint_receipt = document.getElementById("receipt");
+mint_receipt = addEventListener("click", _receipt);
+
+mint_button = document.getElementById("mint_button");
+mint_button.addEventListener("click", _mintNFT);
+
+viewMyToken = document.getElementById("viewMyToken");
+viewMyToken.addEventListener("click", _viewMyTokens);
+
+function _viewMyTokens() {
+  address = web3.eth.accounts[0];
+  console.log(typeof web3.eth.accounts[0]);
+  console.log(`Voting.address : ${address}`);
+  Voting.methods
+    .viewMyTokens(account[0])
+    .call()
+    .then(res => {
+      console.log(res);
+    });
+
+  //   Voting.viewMyTokens(
+  //     "0x5587acE223024b4B9806466eeD79F17518435350",
+  //     function (err, res) {
+  //       console.log(err);
+  //       console.log(res);
+  //     }
+  //   );
+  $(`#myTokens`).append(`<img  src="" alt="null"
+  height="200" width="200">`);
+}
+function _receipt() {
+  console.log(`re`);
+  web3.eth.getTransactionReceipt(tx, (err, res) => {
+    console.log(`receipt!`);
+    console.log(res);
+    console.log(err);
+  });
+}
 function _mintNFT() {
-  Voting.mintNFT();
+  console.log("mint!");
+  url = mint_url.value;
+  address = "";
+  console.log(web3.eth);
+
+  console.log(account[0]);
+  Voting.methods
+    .mintNFT(account[0], url)
+    .send({ from: account[0] })
+    .then(function (res) {
+      console.log(res);
+      tx = res.transactionHash;
+    });
 }

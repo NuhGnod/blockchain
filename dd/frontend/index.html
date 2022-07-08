@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="./voting.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="./voting.css" />
 
     <script type="text/javascript" src="./web3.min.js"></script>
     <script type="text/javascript" src="./web3.min.js.map"></script>
-    <script type="text/javascript" src="./bower_components/jquery/dist/jquery.min.js"></script>
+    <script
+      type="text/javascript"
+      src="./bower_components/jquery/dist/jquery.min.js"
+    ></script>
     <!-- <script  src="http://code.jquery.com/jquery-latest.min.js"></script> -->
     <!-- <script type="text/javascript" src="./inpage.js"></script> -->
 
     <script type="text/javascript">
-    
-        //var Web3 = require('web3');
-        //var contract = require('web3-eth-contract');
-        console.log(window.ethereum)
-       /* window.addEventListener('load', function () {
+      //var Web3 = require('web3');
+      //var contract = require('web3-eth-contract');
+      console.log(window.ethereum);
+      /* window.addEventListener('load', function () {
             if (typeof web3 !== 'undefined') {
 
                 console.log('Web3 Detected! ' + web3.currentProvider.constructor.name)
@@ -32,208 +34,215 @@
             }
         })
         */
-        var account;
-        var VotingContract;
-        window.addEventListener('load',async function() {
-            console.log("ASD");
-            if (window.ethereum) {
-                console.log(`ethereum`)
-                web3 = new Web3(window.ethereum);
-                console.log(web3)
-            }
-            // Legacy dapp browsers...
-            else if (typeof web3 !== "undefined") {
-                console.log('Web3 Detected! ' + web3.currentProvider.constructor.name)
-                window.web3 = new Web3(web3.currentProvider);
-                console.log(web3);
-            }
-            // Non-dapp browsers...
-            else {
-                console.log('No Web3 Detected... using HTTP Provider')
-                web3 = new Web3(Web3.givenProvider || "ws://ropsten.infura.io/v3/9a9dcb1ea0784cafb2dc608fdca92642")
-                //web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/9a9dcb1ea0784cafb2dc608fdca92642"));
-                console.log(Web3)
-                console.log(Web3.givenProvider);            
-            }
-            if(web3)
+      var account;
+      var VotingContract;
+      window.addEventListener("load", async function () {
+        console.log("ASD");
+        if (window.ethereum) {
+          console.log(`ethereum`);
+          web3 = new Web3(window.ethereum);
+          console.log(web3);
+        }
+        // Legacy dapp browsers...
+        else if (typeof web3 !== "undefined") {
+          console.log(
+            "Web3 Detected! " + web3.currentProvider.constructor.name
+          );
+          window.web3 = new Web3(web3.currentProvider);
+          console.log(web3);
+        }
+        // Non-dapp browsers...
+        else {
+          console.log("No Web3 Detected... using HTTP Provider");
+          web3 = new Web3(
+            Web3.givenProvider ||
+              "ws://ropsten.infura.io/v3/9a9dcb1ea0784cafb2dc608fdca92642"
+          );
+          //web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/9a9dcb1ea0784cafb2dc608fdca92642"));
+          console.log(Web3);
+          console.log(Web3.givenProvider);
+        }
+        if (web3) {
+          //account = await web3.eth.requestAccounts();
+        }
+        console.log(web3.version.api);
+        VotingContract = web3.eth.contract(
+          [
             {
-                //account = await web3.eth.requestAccounts();
-            }
-            console.log(web3.version.api)
-            VotingContract = web3.eth.contract([
-            {
-                "inputs": [
-                    {
-                        "internalType": "string",
-                        "name": "_name",
-                        "type": "string"
-                    }
-                ],
-                "name": "candidateEnroll",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
+              inputs: [
+                {
+                  internalType: "string",
+                  name: "_name",
+                  type: "string",
+                },
+              ],
+              name: "candidateEnroll",
+              outputs: [],
+              stateMutability: "nonpayable",
+              type: "function",
             },
             {
-                "inputs": [],
-                "stateMutability": "nonpayable",
-                "type": "constructor"
+              inputs: [],
+              stateMutability: "nonpayable",
+              type: "constructor",
             },
             {
-                "inputs": [
+              inputs: [
+                {
+                  internalType: "string",
+                  name: "_name",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "_to",
+                  type: "string",
+                },
+              ],
+              name: "vote",
+              outputs: [],
+              stateMutability: "nonpayable",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              name: "candidateAddrs",
+              outputs: [
+                {
+                  internalType: "address",
+                  name: "",
+                  type: "address",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "",
+                  type: "address",
+                },
+              ],
+              name: "candidates",
+              outputs: [
+                {
+                  internalType: "string",
+                  name: "name",
+                  type: "string",
+                },
+                {
+                  internalType: "uint256",
+                  name: "votedCount",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "string",
+                  name: "a",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "b",
+                  type: "string",
+                },
+              ],
+              name: "stringCompare",
+              outputs: [
+                {
+                  internalType: "bool",
+                  name: "",
+                  type: "bool",
+                },
+              ],
+              stateMutability: "pure",
+              type: "function",
+            },
+            {
+              inputs: [],
+              name: "viewAllCandidateList",
+              outputs: [
+                {
+                  components: [
                     {
-                        "internalType": "string",
-                        "name": "_name",
-                        "type": "string"
+                      internalType: "string",
+                      name: "name",
+                      type: "string",
                     },
                     {
-                        "internalType": "string",
-                        "name": "_to",
-                        "type": "string"
-                    }
-                ],
-                "name": "vote",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
-            },
-            {
-                "inputs": [
-                    {
-                        "internalType": "uint256",
-                        "name": "",
-                        "type": "uint256"
-                    }
-                ],
-                "name": "candidateAddrs",
-                "outputs": [
-                    {
-                        "internalType": "address",
-                        "name": "",
-                        "type": "address"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "inputs": [
-                    {
-                        "internalType": "address",
-                        "name": "",
-                        "type": "address"
-                    }
-                ],
-                "name": "candidates",
-                "outputs": [
-                    {
-                        "internalType": "string",
-                        "name": "name",
-                        "type": "string"
+                      internalType: "uint256",
+                      name: "votedCount",
+                      type: "uint256",
                     },
-                    {
-                        "internalType": "uint256",
-                        "name": "votedCount",
-                        "type": "uint256"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
+                  ],
+                  internalType: "struct Voting.Candidate[2]",
+                  name: "c",
+                  type: "tuple[2]",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
             },
             {
-                "inputs": [
-                    {
-                        "internalType": "string",
-                        "name": "a",
-                        "type": "string"
-                    },
-                    {
-                        "internalType": "string",
-                        "name": "b",
-                        "type": "string"
-                    }
-                ],
-                "name": "stringCompare",
-                "outputs": [
-                    {
-                        "internalType": "bool",
-                        "name": "",
-                        "type": "bool"
-                    }
-                ],
-                "stateMutability": "pure",
-                "type": "function"
+              inputs: [
+                {
+                  internalType: "string",
+                  name: "_to",
+                  type: "string",
+                },
+              ],
+              name: "viewCandidatesVotingCount",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
             },
             {
-                "inputs": [],
-                "name": "viewAllCandidateList",
-                "outputs": [
-                    {
-                        "components": [
-                            {
-                                "internalType": "string",
-                                "name": "name",
-                                "type": "string"
-                            },
-                            {
-                                "internalType": "uint256",
-                                "name": "votedCount",
-                                "type": "uint256"
-                            }
-                        ],
-                        "internalType": "struct Voting.Candidate[2]",
-                        "name": "c",
-                        "type": "tuple[2]"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "",
+                  type: "address",
+                },
+              ],
+              name: "voters",
+              outputs: [
+                {
+                  internalType: "string",
+                  name: "name",
+                  type: "string",
+                },
+                {
+                  internalType: "uint256",
+                  name: "votingCount",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
             },
-            {
-                "inputs": [
-                    {
-                        "internalType": "string",
-                        "name": "_to",
-                        "type": "string"
-                    }
-                ],
-                "name": "viewCandidatesVotingCount",
-                "outputs": [
-                    {
-                        "internalType": "uint256",
-                        "name": "",
-                        "type": "uint256"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "inputs": [
-                    {
-                        "internalType": "address",
-                        "name": "",
-                        "type": "address"
-                    }
-                ],
-                "name": "voters",
-                "outputs": [
-                    {
-                        "internalType": "string",
-                        "name": "name",
-                        "type": "string"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "votingCount",
-                        "type": "uint256"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            }
-        ],'0x71749Db3C6Ab70dA427bFDf3A71535ea3D2f6937')
-            /*
+          ],
+          "0x71749Db3C6Ab70dA427bFDf3A71535ea3D2f6937"
+        );
+        /*
              VotingContract =  web3.eth.contract([
              {
                  "inputs": [
@@ -383,110 +392,108 @@
              }
          ], '0xFbEd2F011b789c5BE1d51b8A93017eB70D6c9CC8');
            */
-         Voting = VotingContract.at('0x0a204de75cc93a85577b97d73b8c04b1b4c987aa')
-            web3.eth.defaultAccount = '0x5587acE223024b4B9806466eeD79F17518435350'
-            console.log(VotingContract)
-            console.log(Voting)
-            console.log(web3.eth.defaultAccount)
-            console.log(web3)
+        Voting = VotingContract.at(
+          "0x0a204de75cc93a85577b97d73b8c04b1b4c987aa"
+        );
+        web3.eth.defaultAccount = "0x5587acE223024b4B9806466eeD79F17518435350";
+        console.log(VotingContract);
+        console.log(Voting);
+        console.log(web3.eth.defaultAccount);
+        console.log(web3);
+      });
 
+      async function gg() {
+        console.log(`gg start`);
+        try {
+          account = await window.ethereum.request({
+            method: "eth_requestAccounts",
           });
-
-          async function gg() {
-              console.log(`gg start`);
-              try {
-                 account = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                console.log(account);
-              } catch (error) {
-                if (error.code === 4001) {
-                  // User rejected request
-                }
-                console.log(error)
-              }
-
-            console.log("gg end")
+          console.log(account);
+        } catch (error) {
+          if (error.code === 4001) {
+            // User rejected request
           }
-          console.log(window.ethereum)
-
-        $(document).ready(function() {
-            gg()
-            console.log(window)
-     //       console.log(web3.version)
-            console.log("ready")
-            //web3.setProvider(new web3.providers.HttpProvider("https://ropsten.infura.io/v3/9a9dcb1ea0784cafb2dc608fdca92642"))
-            console.log(web3)
-            
-            //let curAccount =  web3.eth.getAccounts()
-            //console.log(curAccount)
-        })
-        function view(_name){
-            let name = _name.slice(3,4);
-            console.log(name)
-            let cnt = Voting.viewCandidatesVotingCount(_name,(err,res) => {
-                document.querySelector(`#candidate${name}`).innerHTML  =res;
-
-            });
-
-        }
-        setInterval(function() {
-                view("후보자1")        
-            },2000);
-        setInterval(function() {
-            view("후보자2")
-        },2000)
-        async function vote(){
-            //let name = $(`#voteToCandidate`);
-            let name = document.querySelector("#voteToCandidate").value;
-            console.log(name);
-            let R;
-            Voting.vote("동훈",name, (err,res) => {
-                R= res;
-                console.log(res);
-                //const result = web3.eth.getTransaction(R, (err,res) => {
-               //     console.log(res)
-               // });
-            })
-            alert(`${name}에게 투표하였다.`);
-            
-           await viewCandidateVotingCount(name)
-        }
-            async function viewCandidateVotingCount(_to){
-            console.log(_to)
-            let count;
-
-           
-           const lgg =  await Voting.viewCandidatesVotingCount(_to,  (err,res) => {
-                console.log(res)
-                count = res;
-                document.querySelector("#candidate1").innerHTML  =count;
-                return count;
-            })
-            console.log(lgg)
-           console.log(document.querySelector("#candidate1").innerHTML);
-           console.log(count)
-
+          console.log(error);
         }
 
-        function getBalance() {
-            var address, wei, balance
-            address = document.getElementById("address").value
-            try {
-                web3.eth.getBalance(address, function (error, wei) 
-                {
-                    console.log(address);
-                    console.log(web3.eth.accounts);
-                    if (!error) {
-                        var balance = web3.fromWei(wei, 'ether');
-                        document.getElementById("output").innerHTML = balance + " ETH";
-                    }
-                });
-            } catch (err) {
-                document.getElementById("output").innerHTML = err;
+        console.log("gg end");
+      }
+      console.log(window.ethereum);
+
+      $(document).ready(function () {
+        gg();
+        console.log(window);
+        //       console.log(web3.version)
+        console.log("ready");
+        //web3.setProvider(new web3.providers.HttpProvider("https://ropsten.infura.io/v3/9a9dcb1ea0784cafb2dc608fdca92642"))
+        console.log(web3);
+
+        //let curAccount =  web3.eth.getAccounts()
+        //console.log(curAccount)
+      });
+      function view(_name) {
+        let name = _name.slice(3, 4);
+        console.log(name);
+        let cnt = Voting.viewCandidatesVotingCount(_name, (err, res) => {
+          document.querySelector(`#candidate${name}`).innerHTML = res;
+        });
+      }
+      setInterval(function () {
+        view("후보자1");
+      }, 2000);
+      setInterval(function () {
+        view("후보자2");
+      }, 2000);
+      async function vote() {
+        //let name = $(`#voteToCandidate`);
+        let name = document.querySelector("#voteToCandidate").value;
+        console.log(name);
+        let R;
+        Voting.vote("동훈", name, (err, res) => {
+          R = res;
+          console.log(res);
+          //const result = web3.eth.getTransaction(R, (err,res) => {
+          //     console.log(res)
+          // });
+        });
+        alert(`${name}에게 투표하였다.`);
+
+        await viewCandidateVotingCount(name);
+      }
+      async function viewCandidateVotingCount(_to) {
+        console.log(_to);
+        let count;
+
+        const lgg = await Voting.viewCandidatesVotingCount(_to, (err, res) => {
+          console.log(res);
+          count = res;
+          document.querySelector("#candidate1").innerHTML = count;
+          return count;
+        });
+        console.log(lgg);
+        console.log(document.querySelector("#candidate1").innerHTML);
+        console.log(count);
+      }
+
+      function getBalance() {
+        var address, wei, balance;
+        address = document.getElementById("address").value;
+        try {
+          web3.eth.getBalance(address, function (error, wei) {
+            console.log(address);
+            console.log(web3.eth.accounts);
+            if (!error) {
+              var balance = web3.fromWei(wei, "ether");
+              document.getElementById("output").innerHTML = balance + " ETH";
             }
+          });
+        } catch (err) {
+          document.getElementById("output").innerHTML = err;
         }
+      }
     </script>
-</head>
-<body>
+  </head>
+  <body>
     <h1>ETH Balance Fetcher</h1>
     <p>Enter your Ethereum Address:</p>
     <input type="text" size="50" id="address" />
@@ -494,22 +501,25 @@
     <br />
     <br />
     <div id="output">여기에</div>
-    <hr>
+    <hr />
     <br />
     <label for="voteToCandidate">투표하기</label>
-    <input id="voteToCandidate">
-    <input id="vote" type="button" onClick="vote();" value="투표하기">
-    <P>후보자 목록  </P>
+    <input id="voteToCandidate" />
+    <input id="vote" type="button" onClick="vote();" value="투표하기" />
+    <p>후보자 목록</p>
     <div>
-        후보자1 x 투표 수 : <div class="voting_div" id="candidate1">여기에</div>
-        <br>
-        <br>
-        후보자2 : <div class="voting_div" id="candidate2">22</div>
-        <br>
-        <br>
-        후보자3 : <div class="voting_div" id="candidate3">33</div>
-        <br>
-        <br>
+      후보자1 x 투표 수 :
+      <div class="voting_div" id="candidate1">여기에</div>
+      <br />
+      <br />
+      후보자2 :
+      <div class="voting_div" id="candidate2">22</div>
+      <br />
+      <br />
+      후보자3 :
+      <div class="voting_div" id="candidate3">33</div>
+      <br />
+      <br />
     </div>
-</body>
+  </body>
 </html>
