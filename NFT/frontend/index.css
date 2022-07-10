@@ -1,3 +1,6 @@
 img {
   size: 100px;
 }
+figure {
+  display: inline-flex;
+}

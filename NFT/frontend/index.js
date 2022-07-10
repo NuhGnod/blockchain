@@ -569,26 +569,59 @@ mint_button.addEventListener("click", _mintNFT);
 viewMyToken = document.getElementById("viewMyToken");
 viewMyToken.addEventListener("click", _viewMyTokens);
 
-function _viewMyTokens() {
-  address = web3.eth.accounts[0];
-  console.log(typeof web3.eth.accounts[0]);
-  console.log(`Voting.address : ${address}`);
-  Voting.methods
-    .viewMyTokens(account[0])
+viewWalletToken = document.getElementById("viewWalletToken");
+viewWalletToken.addEventListener("click", _viewWalletTokens);
+async function _tokenURI(id) {
+  uri = await Voting.methods
+    .tokenURI(id)
     .call()
     .then(res => {
-      console.log(res);
+      console.log(`my Token's URL : ${res}`);
+      return Promise.resolve(res);
     });
-
-  //   Voting.viewMyTokens(
-  //     "0x5587acE223024b4B9806466eeD79F17518435350",
-  //     function (err, res) {
-  //       console.log(err);
-  //       console.log(res);
-  //     }
-  //   );
-  $(`#myTokens`).append(`<img  src="" alt="null"
-  height="200" width="200">`);
+  console.log(`uri : ${uri}`);
+  return Promise.resolve(uri);
+}
+function _viewTokens(addr) {
+  Voting.methods
+    .viewMyTokens(addr)
+    .call()
+    .then(async res => {
+      console.log(res);
+      len = res.length;
+      $(`#myTokens`).empty();
+      for (let i = 0; i < len; i++) {
+        // arr = res[i];
+        myTokenId = res[i]._tokenId;
+        console.log(`myTokenId : ${myTokenId}`);
+        myTokenUri = await _tokenURI(myTokenId);
+        console.log(myTokenUri);
+        $(`#myTokens`).append(
+          `<figure>
+          <img id="${myTokenId}" class="tokens" src="${myTokenUri}" alt="null"
+          height="200" width="200">
+          <figcaption>토큰 Id = ${myTokenId}</figcaption>
+        </figure>
+          
+          `
+        );
+        $(`.tokens`).css({
+          padding: "10px",
+        });
+      }
+      console.log(`length : ${len}`);
+    });
+}
+function _viewWalletTokens() {
+  addr = document.getElementById("walletAddress").value;
+  console.log(`addr : ${addr}`);
+  _viewTokens(addr);
+}
+async function _viewMyTokens() {
+  address = web3.eth.accounts[0];
+  console.log(typeof web3.eth.accounts[0]);
+  console.log(`Voting.address : ${account}`);
+  _viewTokens(account[0]);
 }
 function _receipt() {
   console.log(`re`);
