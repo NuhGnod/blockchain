@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="./index.css" />
 
     <script type="text/javascript" src="./web3.min.js"></script>
-    <script type="text/javascript" src="./web3.min.js.map"></script>
+    <!-- <script type="text/javascript" src="./web3.min.js.map"></script> -->
     <script
       type="text/javascript"
       src="./bower_components/jquery/dist/jquery.min.js"
@@ -14,10 +14,23 @@
 
   </head>
   <body>
-    <h1>ETH Balance Fetcher</h1>
+    <h1>metadata 생성하기</h1>
+    <div>
+      <!-- <button id="nftJSON">이동하기</button> -->
+      <form>
+        <label> Name: <input type="text" /> </label>
+        <label> Image: <input type="file" /> </label>
+        <div>
+          <button type="submit">Store</button>
+        </div>
+        <pre id="out"></pre>
+
+      </form>
+    </div>
+    <h1>Token Balance Fetcher</h1>
     <p>Enter your Ethereum Address:</p>
     <input type="text" size="50" id="address" />
-    <button type="button" onClick="getBalance();">Get Balance</button>
+    <button type="button" onClick="getTokenBalance();">Get Balance</button>
     <br />
     <br />
     <div id="output">여기에</div>
@@ -54,5 +67,6 @@
 
     </div>
   </body>
-  <script src="./index.js"></script>
+  <script  src="./index.js"></script>
+  <script type="module" src="./nftJSON.js"></script>
 </html>

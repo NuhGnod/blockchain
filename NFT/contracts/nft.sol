@@ -41,7 +41,7 @@ contract NFT is ERC721 {
         return userTokens[_key];
 
     }
-    // function bal() public view returns(uint256) {
-    //     return super.balanceOf(msg.sender);
-    // }
+    function bal() public view returns(uint256) {
+        return super.balanceOf(msg.sender);
+    }
 }

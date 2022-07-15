@@ -1,4 +1,8 @@
 console.log(window.ethereum);
+// nftJSON = document.getElementById("nftJSON");
+// nftJSON.addEventListener("click", () => {
+//   open("./nftJSON.html", "_self");
+// });
 /* window.addEventListener('load', function () {
             if (typeof web3 !== 'undefined') {
 
@@ -38,6 +42,10 @@ window.addEventListener("load", async function () {
       Web3.givenProvider ||
         "ws://ropsten.infura.io/v3/9a9dcb1ea0784cafb2dc608fdca92642"
     );
+    // web3 = new Web3(
+    //   Web3.givenProvider ||
+    //     "https://rinkeby.infura.io/v3/c931cd94c93746e3a7d5ccea599834c4"
+    // );
     //web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/9a9dcb1ea0784cafb2dc608fdca92642"));
     console.log(Web3);
     console.log(Web3.givenProvider);
@@ -173,6 +181,19 @@ window.addEventListener("load", async function () {
         name: "approve",
         outputs: [],
         stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [],
+        name: "bal",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address",
+          },
+        ],
+        stateMutability: "view",
         type: "function",
       },
       {
@@ -503,7 +524,7 @@ window.addEventListener("load", async function () {
         type: "function",
       },
     ],
-    "0x72C113fDd8F7A4596c0151DA01DF0fB3E4D5CCAE"
+    "0x256525916038B6dF17F3ceE986A7F6E45A37E967"
   );
   console.log(VotingContract);
 
@@ -523,6 +544,7 @@ window.addEventListener("load", async function () {
   //     )
   //   );
 });
+
 gg();
 async function gg() {
   console.log(`gg start`);
@@ -644,5 +666,14 @@ function _mintNFT() {
     .then(function (res) {
       console.log(res);
       tx = res.transactionHash;
+    });
+}
+function getTokenBalance() {
+  console.log(metadata);
+  Voting.methods
+    .balanceOf("0x5587acE223024b4B9806466eeD79F17518435350")
+    .call()
+    .then(res => {
+      console.log(res);
     });
 }
