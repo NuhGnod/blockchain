@@ -1,5 +1,4 @@
 import { NFTStorage } from "https://cdn.jsdelivr.net/npm/nft.storage/dist/bundle.esm.min.js";
-console.log(`check`);
 const token =
   new URLSearchParams(window.location.search).get("key") ||
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDZFZTNBNDc5NDU3RjcxMDg3ODJhYzM0NjM2NTRDOTgwRjM4MzBGYzYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY1NzcxMjgwMzY5MiwibmFtZSI6Im5mdCJ9.ysknPSy9QKx3nqzDdq-FDNWQACECFWOYxXzgiITpsQU"; // your API key from https://nft.storage/manage
