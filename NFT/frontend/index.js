@@ -238,9 +238,9 @@ window.addEventListener("load", async function () {
           name: "bal",
           outputs: [
             {
-              internalType: "address",
+              internalType: "uint256",
               name: "",
-              type: "address",
+              type: "uint256",
             },
           ],
           stateMutability: "view",
@@ -573,8 +573,21 @@ window.addEventListener("load", async function () {
           stateMutability: "view",
           type: "function",
         },
+        {
+          inputs: [],
+          name: "viewTotalTokenBalance",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
       ],
-      "0x256525916038B6dF17F3ceE986A7F6E45A37E967"
+      "0xC7b2bBcDf784AC8b80Eb654BdE27CB9D7ce5faB2"
     );
 
     //   Voting = VotingContract.at("0x72C113fDd8F7A4596c0151DA01DF0fB3E4D5CCAE");
@@ -598,23 +611,6 @@ window.addEventListener("load", async function () {
       return true;
     }
 
-    function getBalance() {
-      if (!checkLoginMetaMask()) return;
-      var address, wei, balance;
-      address = document.getElementById("address").value;
-      try {
-        web3.eth.getBalance(address, function (error, wei) {
-          console.log(address);
-          console.log(web3.eth.accounts);
-          if (!error) {
-            var balance = web3.fromWei(wei, "ether");
-            document.getElementById("output").innerHTML = balance + " ETH";
-          }
-        });
-      } catch (err) {
-        document.getElementById("output").innerHTML = err;
-      }
-    }
     tx = "";
     // console.log("asd");
     mint_url = document.getElementById("mint_url");
@@ -627,9 +623,8 @@ window.addEventListener("load", async function () {
     viewMyToken = document.getElementById("viewMyToken");
     viewMyToken.addEventListener("click", _viewMyTokens);
 
-    viewWalletToken = document.getElementById("viewWalletToken");
-    viewWalletToken.addEventListener("click", _viewWalletTokens);
-
+    // getTokenBalance = document.getElementById("getTokenBalance");
+    // getTokenBalance.addEventListener("click", _getTokenBalance);
     async function _tokenURI(id) {
       uri = await Voting.methods
         .tokenURI(id)
@@ -651,32 +646,53 @@ window.addEventListener("load", async function () {
           $(`#myTokens`).empty();
           for (let i = 0; i < len; i++) {
             // arr = res[i];
-            myTokenId = res[i]._tokenId;
-            // console.log(`myTokenId : ${myTokenId}`);
+            myTokenId = res[i]._tokenId; //토큰 ID
+            metadataUri = "https://ipfs.io/ipfs/"; //nft 메타데이터 주소
+
+            metadataUri += await _tokenURI(myTokenId);
+            metadataUri += "/metadata.json";
+            console.log(metadataUri);
+            imageUri = "https://ipfs.io/ipfs/"; //내 nft 이미지 주소
+
+            ddd = $.ajax({
+              url: metadataUri,
+              type: "GET",
+              async: false,
+              // dataType: "jsonp",
+              success: function (res) {
+                image_uri = res.image.split("//")[1];
+                // image_uri =
+                console.log(`ajax : ${res}`);
+                console.log(`nft name : ${res.name}`);
+                console.log(`nft description : ${res.description}`);
+                console.log(`nft external_url : ${res.external_url}`);
+                console.log(`nft attributes : ${res.attributes}`);
+                console.log(`nft image : ${res.image}`);
+                imageUri += image_uri;
+              },
+              error: function (err) {
+                console.log(`err : ${err}`);
+              },
+            });
             myTokenUri = await _tokenURI(myTokenId);
-            // console.log(myTokenUri);
+
             $(`#myTokens`).append(
               `<figure>
-          <img id="${myTokenId}" class="tokens" src="${myTokenUri}" alt="null"
+          <img id="${myTokenId}" class="tokens" src="${imageUri}" alt="null"
           height="200" width="200">
           <figcaption>토큰 Id = ${myTokenId}</figcaption>
         </figure>
-          
           `
             );
             $(`.tokens`).css({
               padding: "10px",
             });
           }
-          // console.log(`length : ${len}`);
         });
     }
-    function _viewWalletTokens() {
-      addr = document.getElementById("walletAddress").value;
-      console.log(`입력받은 지갑 주소 : ${addr}`);
-      _viewTokens(addr);
-    }
+
     async function _viewMyTokens() {
+      open("./token.html", "_self");
       //내 토큰 확인하기
       console.log(`Voting.address : ${account}`);
       _viewTokens(account);
@@ -693,25 +709,30 @@ window.addEventListener("load", async function () {
       //민팅 함수.
       console.log(`_mintNFT함수 내부 : ${account}`);
       if (!checkLoginMetaMask()) return;
+      let metadata = sessionStorage.getItem("metadata");
 
       console.log("mint!");
       url = mint_url.value;
       address = "";
       Voting.methods
-        .mintNFT(account, url)
+        .mintNFT(account, metadata)
         .send({ from: account })
         .then(function (res) {
-          console.log(`_mintNFT함수 결과 : ${res}`);
+          console.log(`_mintNFT함수 결과 :`);
+          console.log(res);
           tx = res.transactionHash;
+          //민팅후 세션 초기화.
+          sessionStorage.removeItem("metadata");
         });
     }
-    function getTokenBalance() {
-      console.log(metadata);
+    function _getTokenBalance() {
+      addr = document.getElementById("contract_addr").value;
       Voting.methods
-        .balanceOf("0x5587acE223024b4B9806466eeD79F17518435350")
+        .balanceOf(addr)
         .call()
         .then(res => {
-          console.log(res);
+          token_balance = document.getElementById("token_balance");
+          $("#token_balance").text(res);
         });
     }
   });

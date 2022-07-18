@@ -8,9 +8,13 @@ function log(msg) {
   document.getElementById("out").innerHTML += `${msg}\n`;
 }
 let metadata;
+console.log(metadata);
 document.querySelector("form").addEventListener("submit", async e => {
   e.preventDefault();
-  const nameEl = document.querySelector('input[type="text"]');
+  const nameEl = document.querySelector('input[id="name"]');
+  const desEl = document.querySelector('input[id="description"]');
+  const trait = document.querySelector('input[id="trait"]');
+  const value = document.querySelector('input[id="value"]');
   if (!nameEl.value) return log("Missing name");
   const fileEl = document.querySelector('input[type="file"]');
   if (!fileEl.files.length) return log("No files selected");
@@ -20,26 +24,27 @@ document.querySelector("form").addEventListener("submit", async e => {
   });
   try {
     sessionStorage.setItem("ASD", nameEl.value);
+
     metadata = await storage.store({
       name: nameEl.value,
-      description:
-        "Using the nft.storage metadata API to create ERC-1155 compatible metadata.",
+      description: desEl.value,
       image: fileEl.files[0],
-      external_url: "https://openseacreatures.io/3",
+      external_url: "https://openseacreatures.io/3", //??
 
       attributes: [
         {
-          trait_type: "Unknown",
-          value: "Unknown",
+          trait_type: trait.value,
+          value: value.value,
         },
       ],
     });
+    log({ "cid : ": metadata.ipnft });
     log({ "IPFS URL for the metadata": metadata.url });
     log({ "metadata.json contents": metadata.data });
     log({
       "metadata.json contents with IPFS gateway URLs": metadata.embed(),
     });
-    sessionStorage.setItem("metadata", metadata.url);
+    sessionStorage.setItem("metadata", metadata.ipnft);
     // localStorage.setItem("23", JSON.parse(metadata));
   } catch (err) {
     console.error(err);

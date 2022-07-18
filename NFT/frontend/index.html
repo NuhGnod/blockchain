@@ -5,9 +5,9 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" type="text/css" href="./index.css" />
 
-    <script type="text/javascript" src="./web3.min.js"></script>
     <!-- <script type="text/javascript" src="./web3.min.js.map"></script> -->
-    <script
+        <script type="text/javascript" src="./web3.min.js"></script>
+<script
       type="text/javascript"
       src="./bower_components/jquery/dist/jquery.min.js"
     ></script>
@@ -18,8 +18,16 @@
     <div>
       <!-- <button id="nftJSON">이동하기</button> -->
       <form>
-        <label> Name: <input type="text" /> </label>
-        <label> Image: <input type="file" /> </label>
+        <label> Image: <input type="file" /> </label>        <br/>
+
+        <label> Name: <input type="text" id="name" /> </label>
+        <br/>
+
+        <label> 설명: <input type="text" id="description"/> </label>        <br/>
+        <h3>속성</h3>
+        <label> 특성: <input type="text" id="trait"/> </label> <br/> 
+        <label> 값: <input type="text" id="value"/> </label>
+        
         <div>
           <button type="submit">Store</button>
         </div>
@@ -27,18 +35,10 @@
 
       </form>
     </div>
-    <h1>Token Balance Fetcher</h1>
-    <p>Enter your Ethereum Address:</p>
-    <input type="text" size="50" id="address" />
-    <button type="button" onClick="getTokenBalance();">Get Balance</button>
-    <br />
-    <br />
-    <div id="output">여기에</div>
-    <hr />
-    <h3>https://ipfs.io/ipfs/QmSyj5Hjqux8ecxNo5uEi5v7ZSJVX7aWVo8FbSRviZVWHb</h3>
-    <h3>https://ipfs.io/ipfs/Qmakehzc4nR5xiGy26vHFFH23AXAjZt7wC5ubtcLxekHqT?filename=sign.png</h3>
-    <h3>https://ipfs.io/ipfs/QmPdbF3h1HumMaPx3eYj7uf4Bz92EwQWdRVXZLbDiAczCM?filename=948a1bb6-6729-4d03-81e7-9ba3bc5eeda1.pdf-0001.jpg</h3>
     
+    <br />
+    <br />
+     
     <input id="mint_url">
     <button id="mint_button">민팅하기</button>
     <button id="receipt">영수증확인</button>
@@ -48,7 +48,7 @@
     </h2>
     <br>
     <button id="viewMyToken">
-        토큰확인하기
+        토큰 확인하기
     </button>
     <div id="myTokens">
         <!-- <img  src="https://ipfs.io/ipfs/QmSyj5Hjqux8ecxNo5uEi5v7ZSJVX7aWVo8FbSRviZVWHb
@@ -57,13 +57,13 @@
 
 
     </div>
-    <hr>
-    <div id="walletTokens">
+    
+    <!-- <div id="walletTokens">
         <input id="walletAddress">
         <button id="viewWalletToken">
             토큰확인하기
         </button>
-    </div>
+    </div> -->
 
     </div>
   </body>
