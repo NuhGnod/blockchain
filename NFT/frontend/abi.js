@@ -82,35 +82,6 @@ export const abi = [
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    name: "allTokens",
-    outputs: [
-      {
-        internalType: "string",
-        name: "_tokenName",
-        type: "string",
-      },
-      {
-        internalType: "uint256",
-        name: "_tokenId",
-        type: "uint256",
-      },
-      {
-        internalType: "address",
-        name: "_owner",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "address",
         name: "to",
         type: "address",
@@ -124,19 +95,6 @@ export const abi = [
     name: "approve",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "bal",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {
@@ -398,72 +356,6 @@ export const abi = [
     name: "transferFrom",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "viewAllTokens",
-    outputs: [
-      {
-        components: [
-          {
-            internalType: "string",
-            name: "_tokenName",
-            type: "string",
-          },
-          {
-            internalType: "uint256",
-            name: "_tokenId",
-            type: "uint256",
-          },
-          {
-            internalType: "address",
-            name: "_owner",
-            type: "address",
-          },
-        ],
-        internalType: "struct NFT.img[]",
-        name: "",
-        type: "tuple[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_key",
-        type: "address",
-      },
-    ],
-    name: "viewMyTokens",
-    outputs: [
-      {
-        components: [
-          {
-            internalType: "string",
-            name: "_tokenName",
-            type: "string",
-          },
-          {
-            internalType: "uint256",
-            name: "_tokenId",
-            type: "uint256",
-          },
-          {
-            internalType: "address",
-            name: "_owner",
-            type: "address",
-          },
-        ],
-        internalType: "struct NFT.img[]",
-        name: "",
-        type: "tuple[]",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {
