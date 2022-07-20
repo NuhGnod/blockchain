@@ -1,6 +1,13 @@
 window.addEventListener("load", async function () {
+  var HOME = this.document.getElementById("HOME");
+  HOME.addEventListener("click", function () {
+    open("./index.html", "_self");
+  });
+  var account;
   console.log("ASD");
   let { abi } = await import("./abi.js");
+  let { contract } = await import("./contractAddress.js");
+
   console.log(abi);
 
   if (window.ethereum) {
@@ -88,10 +95,119 @@ window.addEventListener("load", async function () {
       });
     }, 1000); //accountInterval
     //컨트랙트 연결.
-    nftContract = new web3.eth.Contract(
-      abi,
-      "0xC7b2bBcDf784AC8b80Eb654BdE27CB9D7ce5faB2"
-    );
+    nftContract = new web3.eth.Contract(abi, contract);
     console.log(nftContract);
+    //
+    //
+    //
+    let getToken = document.getElementById("getToken");
+    getToken.addEventListener("click", _getToken);
+    let getTokenBalance = document.getElementById("getTokenBalance");
+    getTokenBalance.addEventListener("click", _getTokenBalance);
+    let transfer = document.getElementById("transfer");
+    transfer.addEventListener("click", _transfer);
+
+    function _transfer() {
+      let targetAddress = document.getElementById("targetAddress").value;
+      let targetTokenId = document.getElementById("targetTokenId").value;
+      console.log(targetAddress);
+      console.log(account);
+      nftContract.methods
+        .safeTransferFrom(account, targetAddress, targetTokenId)
+        .send({ from: account })
+        .then(function (res) {
+          console.log(res);
+        });
+    }
+    function _getTokenBalance() {
+      nftContract.methods
+        .balanceOf(account)
+        .call()
+        .then(res => {
+          console.log(res);
+          $(`#token_balance`).text(res);
+        });
+    }
+    async function _tokenURI(id) {
+      //token id 값으로 토큰의 메타데이터 주소 리턴.
+      uri = await nftContract.methods
+        .tokenURI(id)
+        .call()
+        .then(res => {
+          console.log(`my Token's URL : ${res}`);
+          return Promise.resolve(res);
+        });
+      console.log(`uri : ${uri}`);
+      return Promise.resolve(uri);
+    }
+    async function _getToken() {
+      console.log(`function _getToken`);
+      var totalTokenCount;
+      let qwe = await nftContract.methods
+        .viewTotalTokenBalance()
+        .call()
+        .then(res => {
+          totalTokenCount = res;
+          //   console.log(res);
+          return res;
+        });
+      console.log(totalTokenCount);
+      $(`#tokenList`).empty();
+
+      for (let i = 1; i <= totalTokenCount; i++) {
+        console.log(`i : ${i}`);
+        nftContract.methods
+          .ownerOf(i)
+          .call()
+          .then(async res => {
+            console.log(res);
+            if (res == account) {
+              // i 값에 해당하는 토큰의 owner가 현재 account이다.
+              myTokenId = i; //토큰 ID
+              metadataUri = "https://ipfs.io/ipfs/"; //nft 메타데이터 주소
+
+              metadataUri += await _tokenURI(myTokenId);
+              metadataUri += "/metadata.json";
+              console.log(metadataUri);
+              imageUri = "https://ipfs.io/ipfs/"; //내 nft 이미지 주소
+
+              ddd = $.ajax({
+                url: metadataUri,
+                type: "GET",
+                async: false,
+                // dataType: "jsonp",
+                success: function (res) {
+                  image_uri = res.image.split("//")[1];
+                  // image_uri =
+                  console.log(`ajax : ${res}`);
+                  console.log(`nft name : ${res.name}`);
+                  console.log(`nft description : ${res.description}`);
+                  console.log(`nft external_url : ${res.external_url}`);
+                  console.log(`nft attributes : ${res.attributes}`);
+                  console.log(`nft image : ${res.image}`);
+                  imageUri += image_uri;
+                },
+                error: function (err) {
+                  console.log(`err : ${err}`);
+                },
+              });
+              // myTokenUri = await _tokenURI(myTokenId);
+
+              $(`#tokenList`).append(
+                `<figure>
+                  <img id="${myTokenId}" class="tokens" src="${imageUri}" alt="null"
+                  height="200" width="200">
+                  <figcaption>토큰 Id = ${myTokenId}</figcaption>
+                </figure>
+                  `
+              );
+              $(`.tokens`).css({
+                border: "1px solid black",
+                padding: "10px",
+              });
+            }
+          });
+      }
+    }
   });
 });

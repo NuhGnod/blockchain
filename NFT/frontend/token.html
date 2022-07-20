@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="./token.css" />
     <script type="text/javascript" src="./web3.min.js"></script>
     <script
       type="text/javascript"
@@ -12,11 +13,24 @@
     ></script>
   </head>
   <body>
+    <h1 id="HOME">HOME</h1>
+
     <h1>Token Balance Fetcher</h1>
     <p>Enter your Ethereum Address:</p>
-    <input type="text" size="50" id="contract_addr" />
+
     <button id="getTokenBalance" type="button">Get Balance</button>
+    <br />
     <div id="token_balance"></div>
+    <br />
+    <hr />
+    <h1>My Token List</h1>
+    <button id="getToken">Get Token List</button>
+    <div id="tokenList"></div>
+    <hr />
+    <h1>Transfer Token</h1>
+    <input id="targetAddress" placeholder="대상 지갑 주소." />
+    <input id="targetTokenId" placeholder="대상 토큰 Id." />
+    <button id="transfer">Transfer</button>
   </body>
   <script src="./viewToken.js"></script>
 </html>
