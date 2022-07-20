@@ -5,11 +5,12 @@ const token =
 
 function log(msg) {
   msg = JSON.stringify(msg, null, 2);
-  document.getElementById("out").innerHTML += `${msg}\n`;
+  // document.getElementById("out").innerHTML += `${msg}\n`;
 }
 let metadata;
 console.log(metadata);
 document.querySelector("form").addEventListener("submit", async e => {
+  alert("metadata 생성중.");
   e.preventDefault();
   const nameEl = document.querySelector('input[id="name"]');
   const desEl = document.querySelector('input[id="description"]');
@@ -45,7 +46,9 @@ document.querySelector("form").addEventListener("submit", async e => {
       "metadata.json contents with IPFS gateway URLs": metadata.embed(),
     });
     sessionStorage.setItem("metadata", metadata.ipnft);
+    sessionStorage.setItem("status", true);
     // localStorage.setItem("23", JSON.parse(metadata));
+    alert(`metadata 생성완료.`);
   } catch (err) {
     console.error(err);
     log(err.message);

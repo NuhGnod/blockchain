@@ -7,7 +7,7 @@ var userAddress;
 
 window.addEventListener("load", async function () {
   let { abi } = await import("./abi.js");
-  let { contract } = await import("./contractAddress.js");
+  let { contract } = await import("");
   console.log(abi);
   // console.log("ASD");
   if (window.ethereum) {
@@ -107,7 +107,10 @@ window.addEventListener("load", async function () {
         }
       });
     }, 1000); //accountInterval
-    VotingContract = new web3.eth.Contract(abi, contract);
+    VotingContract = new web3.eth.Contract(
+      abi,
+      "0xC7b2bBcDf784AC8b80Eb654BdE27CB9D7ce5faB2"
+    );
 
     //   Voting = VotingContract.at("0x72C113fDd8F7A4596c0151DA01DF0fB3E4D5CCAE");
     Voting = VotingContract;
@@ -144,10 +147,77 @@ window.addEventListener("load", async function () {
 
     // getTokenBalance = document.getElementById("getTokenBalance");
     // getTokenBalance.addEventListener("click", _getTokenBalance);
+    async function _tokenURI(id) {
+      uri = await Voting.methods
+        .tokenURI(id)
+        .call()
+        .then(res => {
+          console.log(`my Token's URL : ${res}`);
+          return Promise.resolve(res);
+        });
+      console.log(`uri : ${uri}`);
+      return Promise.resolve(uri);
+    }
+    function _viewTokens(addr) {
+      Voting.methods
+        .viewMyTokens(addr)
+        .call()
+        .then(async res => {
+          console.log(`viewTokens 함수 결과 : ${res}`);
+          len = res.length;
+          $(`#myTokens`).empty();
+          for (let i = 0; i < len; i++) {
+            // arr = res[i];
+            myTokenId = res[i]._tokenId; //토큰 ID
+            metadataUri = "https://ipfs.io/ipfs/"; //nft 메타데이터 주소
+
+            metadataUri += await _tokenURI(myTokenId);
+            metadataUri += "/metadata.json";
+            console.log(metadataUri);
+            imageUri = "https://ipfs.io/ipfs/"; //내 nft 이미지 주소
+
+            ddd = $.ajax({
+              url: metadataUri,
+              type: "GET",
+              async: false,
+              // dataType: "jsonp",
+              success: function (res) {
+                image_uri = res.image.split("//")[1];
+                // image_uri =
+                console.log(`ajax : ${res}`);
+                console.log(`nft name : ${res.name}`);
+                console.log(`nft description : ${res.description}`);
+                console.log(`nft external_url : ${res.external_url}`);
+                console.log(`nft attributes : ${res.attributes}`);
+                console.log(`nft image : ${res.image}`);
+                imageUri += image_uri;
+              },
+              error: function (err) {
+                console.log(`err : ${err}`);
+              },
+            });
+            myTokenUri = await _tokenURI(myTokenId);
+
+            $(`#myTokens`).append(
+              `<figure>
+          <img id="${myTokenId}" class="tokens" src="${imageUri}" alt="null"
+          height="200" width="200">
+          <figcaption>토큰 Id = ${myTokenId}</figcaption>
+        </figure>
+          `
+            );
+            $(`.tokens`).css({
+              padding: "10px",
+            });
+          }
+        });
+    }
 
     async function _viewMyTokens() {
       open("./token.html", "_self");
       //내 토큰 확인하기
+      console.log(`Voting.address : ${account}`);
+      _viewTokens(account);
     }
     function _receipt() {
       // console.log(`re`);
@@ -162,11 +232,7 @@ window.addEventListener("load", async function () {
       console.log(`_mintNFT함수 내부 : ${account}`);
       if (!checkLoginMetaMask()) return;
       let metadata = sessionStorage.getItem("metadata");
-      let status = sessionStorage.getItem("status");
-      if (!status) {
-        alert("metadata json 아직 생성 안됨.");
-        return;
-      }
+
       console.log("mint!");
       url = mint_url.value;
       address = "";
@@ -179,7 +245,16 @@ window.addEventListener("load", async function () {
           tx = res.transactionHash;
           //민팅후 세션 초기화.
           sessionStorage.removeItem("metadata");
-          sessionStorage.setItem("status", false);
+        });
+    }
+    function _getTokenBalance() {
+      addr = document.getElementById("contract_addr").value;
+      Voting.methods
+        .balanceOf(addr)
+        .call()
+        .then(res => {
+          token_balance = document.getElementById("token_balance");
+          $("#token_balance").text(res);
         });
     }
   });
