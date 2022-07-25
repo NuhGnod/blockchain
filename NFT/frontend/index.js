@@ -132,9 +132,9 @@ window.addEventListener("load", async function () {
 
     tx = "";
     // console.log("asd");
-    mint_url = document.getElementById("mint_url");
-    mint_receipt = document.getElementById("receipt");
-    mint_receipt = addEventListener("click", _receipt);
+    // mint_url = document.getElementById("mint_url");
+    // mint_receipt = document.getElementById("receipt");
+    // mint_receipt = addEventListener("click", _receipt);
 
     mint_button = document.getElementById("mint_button");
     mint_button.addEventListener("click", _mintNFT);
