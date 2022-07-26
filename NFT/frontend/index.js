@@ -168,7 +168,7 @@ window.addEventListener("load", async function () {
         return;
       }
       console.log("mint!");
-      url = mint_url.value;
+      // url = mint_url.value;
       address = "";
       Voting.methods
         .mintNFT(account, metadata)

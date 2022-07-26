@@ -197,7 +197,7 @@ window.addEventListener("load", async function () {
                 `<figure>
                   <img id="${myTokenId}" class="tokens" src="${imageUri}" alt="null"
                   height="200" width="200">
-                  <figcaption>토큰 Id = ${myTokenId}</figcaption>
+                  <figcaption>토큰 Id = ${i}</figcaption>
                 </figure>
                   `
               );
